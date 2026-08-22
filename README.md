@@ -1,17 +1,17 @@
 # mutate4objc
 
-`mutate4objc` performs safe one-at-a-time mutation testing for `.m` and `.mm` files. Its lexer ignores comments and string contents.
-
-## Install
+`mutate4objc` performs syntax-aware mutation testing for Objective-C. It verifies the baseline, restores source through a crash-recovery journal, separates timeouts and compile errors from killed mutants, and writes a versioned JSON manifest.
 
 ```bash
 pipx install git+https://github.com/lukasa1993/mutate4objc.git
+mutate4objc --test-command "<project test command>" --validate-command "<project build command>"
 ```
 
-## Run
+Compiled C-family projects require a detected or explicit validation command. Timeouts, invalid syntax, and compile errors return status `1`; surviving mutants return status `2`.
+
+## Development
 
 ```bash
-mutate4objc --test-command "make test" --fail-on-survivors
+python -m pip install -e . pytest
+pytest -q
 ```
-
-Use `--list`, `--max-mutants`, and path fragments to control the run. The tool restores every source file in a `finally` block and writes `target/mutation/mutations.json`.
